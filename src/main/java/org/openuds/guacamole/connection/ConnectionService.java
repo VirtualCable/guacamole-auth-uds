@@ -80,16 +80,18 @@ public class ConnectionService {
      * not match these expectations will be skipped.
      *
      * @param uri
-     *     The URI of the OpenUDS service to which the HTTP GET request should
-     *     be made.
+     *            The URI of the OpenUDS service to which the HTTP GET request
+     *            should
+     *            be made.
      *
      * @return
-     *     A map of all parameter name/value pairs returned by the OpenUDS
-     *     service.
+     *         A map of all parameter name/value pairs returned by the OpenUDS
+     *         service.
      *
      * @throws GuacamoleException
-     *     If the OpenUDS service returns an error, or the response from the
-     *     service cannot be read.
+     *                            If the OpenUDS service returns an error, or the
+     *                            response from the
+     *                            service cannot be read.
      */
     private Map<String, String> readConnectionConfiguration(URI uri)
             throws GuacamoleException {
@@ -100,8 +102,7 @@ public class ConnectionService {
         try {
             URLConnection connection = uri.toURL().openConnection();
             response = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new GuacamoleServerException("Unable to open connection to OpenUDS service.", e);
         }
 
@@ -124,9 +125,8 @@ public class ConnectionService {
 
                 // Add key/value pair from either side of the tab
                 parameters.put(
-                    inputLine.substring(0, tab),
-                    inputLine.substring(tab + 1)
-                );
+                        inputLine.substring(0, tab),
+                        inputLine.substring(tab + 1));
 
             }
 
@@ -142,8 +142,7 @@ public class ConnectionService {
 
             try {
                 response.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.warn("Closure of connection to OpenUDS failed. Resource may leak.", e);
             }
 
@@ -160,19 +159,24 @@ public class ConnectionService {
      * via the "data" parameter to the Guacamole tunnel.
      *
      * @param data
-     *     The OpenUDS-specific data which defines the connection whose
-     *     configuration should be retrieved.
+     *             The OpenUDS-specific data which defines the connection whose
+     *             configuration should be retrieved.
      *
      * @return
-     *     The configuration of the connection associated with the provided
-     *     OpenUDS-specific data.
+     *         The configuration of the connection associated with the provided
+     *         OpenUDS-specific data.
      *
      * @throws GuacamoleException
-     *     If the connection configuration could not be retrieved from OpenUDS,
-     *     of the response from OpenUDS was missing required information.
+     *                            If the connection configuration could not be
+     *                            retrieved from OpenUDS,
+     *                            of the response from OpenUDS was missing required
+     *                            information.
      */
     public GuacamoleConfiguration getConnectionConfiguration(String data)
             throws GuacamoleException {
+
+        // Clean up data { and } characters
+        data = data.replace("{", "").replace("}", "");
 
         logger.debug("Retrieving/validating connection configuration using data from \"{}\"...", data);
 
