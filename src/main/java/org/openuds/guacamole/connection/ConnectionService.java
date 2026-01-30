@@ -103,6 +103,7 @@ public class ConnectionService {
             URLConnection connection = uri.toURL().openConnection();
             response = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         } catch (IOException e) {
+            logger.error("Connection to OpenUDS failed.", e);
             throw new GuacamoleServerException("Unable to open connection to OpenUDS service.", e);
         }
 
